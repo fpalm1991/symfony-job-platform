@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Job{% endblock %}
+
+{% block body %}
+
+    <header class="header">
+
+        {% include 'components/_navigation.html.twig' %}
+
+    </header>
+
+    <main class="main">
+
+        <section class="section">
+            <h1>Job</h1>
+
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Title</th>
+                    <td>{{ job.title }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ job.description }}</td>
+                </tr>
+                <tr>
+                    <th>Fte</th>
+                    <td>{{ job.fte }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </section>
+
+        <a class="btn btn__apply" href="#">Apply Now</a>
+
+    </main>
+
+
+{% endblock %}

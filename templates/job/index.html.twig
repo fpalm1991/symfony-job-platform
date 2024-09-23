@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Job index{% endblock %}
+
+{% block body %}
+
+    <header class="header">
+
+        {% include 'components/_navigation.html.twig' %}
+
+    </header>
+
+    <main class="main">
+
+        <section class="section">
+            <h1>Jobs</h1>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Fte</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.title }}</td>
+                        <td>{{ job.fte }}</td>
+                        <td>
+                            <a href="{{ path('app_job_show', {'id': job.id}) }}">show</a>
+                            <a href="{{ path('app_job_edit', {'id': job.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <a href="{{ path('app_job_new') }}">Create new</a>
+
+    </main>
+
+
+{% endblock %}

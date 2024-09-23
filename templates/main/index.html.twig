@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Discover Our Current Positions{% endblock %}
+
+{% block body %}
+    
+    <header class="header">
+
+        {% include 'components/_navigation.html.twig' %}
+
+        {% include 'components/_header-image.html.twig' %}
+
+    </header>
+
+    <main class="main">
+
+        <section class="section">
+
+            <h1 class="heading heading--h1">Discover Our Open Positions</h1>
+
+            <div class="jobs">
+
+                {% for job in jobs %}
+
+                    <article class="job-teaser">
+                        <h3 class="job-teaser__title">{{ job.title }} <span class="job-teaser__fte">({{ job.fte }} %)</span></h3>
+                        <p class="job-teaser__description">{{ job.description|slice(0, 120) }}...</p>
+                        <a class="job-teaser__button" href="{{ path('app_job_show', {'id': job.id}) }}">Learn more</a>
+
+                        <div class="job-teaser__features">
+
+                            {% for feature in job.features %}
+
+                                <span class="job-teaser__feature">{{ feature.title }}</span>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+        </section>
+
+    </main>
+
+{% endblock %}
