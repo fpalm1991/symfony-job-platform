@@ -9,5 +9,6 @@ import './bootstrap.js';
 import './styles/app.css';
 import './styles/typography.css'
 import './styles/components.css'
+import './styles/utilities.css'
 
 console.log('Welcome, traveler!');

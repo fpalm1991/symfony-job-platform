@@ -27,11 +27,11 @@
                         <p class="job-teaser__description">{{ job.description|slice(0, 120) }}...</p>
                         <a class="job-teaser__button" href="{{ path('app_job_show', {'id': job.id}) }}">Learn more</a>
 
-                        <div class="job-teaser__features">
+                        <div class="features">
 
                             {% for feature in job.features %}
 
-                                <span class="job-teaser__feature">{{ feature.title }}</span>
+                                <span class="feature">{{ feature.title }}</span>
 
                             {% endfor %}
 

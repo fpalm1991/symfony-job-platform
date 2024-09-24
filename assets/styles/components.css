@@ -6,12 +6,33 @@
     border-radius: 12px;
 }
 
-.btn__apply {
-    background-color: var(--main-background-accent);
-    transition: all .2s ease-in-out;
+.btn:hover,
+.btn:active {
+    box-shadow: 2px 2px 6px #535353;
 }
 
-.btn__apply:hover {
-    transform: scale(1.02);
-    box-shadow: 2px 2px 14px #d1d1d1;
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1.6rem;
+    row-gap: .6rem;
+    flex-direction: column;
+
+
+    .btn {
+        align-self: flex-start;
+    }
+
+    @media (min-width: 680px) {
+        flex-direction: row;
+    }
+}
+
+.btn__apply {
+    background-color: var(--main-background-accent);
+}
+
+.btn__primary {
+    border: 1px solid var(--main-color-light);
+    color: var(--main-color);
 }

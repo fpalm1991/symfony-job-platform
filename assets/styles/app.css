@@ -53,12 +53,20 @@ body {
     justify-content: flex-end;
     column-gap: 4rem;
     flex: 1;
+
+    a {
+        display: inline-block;
+        text-decoration: none;
+        color: var(--main-color);
+        height: 100%;
+    }
 }
 
-.navigation__item:hover {
-    text-decoration: underline;
-    cursor: pointer;
-    text-underline-offset: 12px;
+.navigation--admin {
+    background-color: rgba(255, 165, 0, 0.47);
+    padding: 4px 22px;
+    border-radius: 4px;
+    font-size: 1rem;
 }
 
 .jobs {
@@ -93,14 +101,14 @@ body {
     margin-bottom: 1.8rem;
 }
 
-.job-teaser__features {
+.features {
     display: flex;
     flex-wrap: wrap;
     column-gap: 1.6rem;
     row-gap: 1rem;
 }
 
-.job-teaser__feature {
+.feature {
     font-size: .8rem;
     padding: .4rem 1rem;
     background-color: var(--main-background-accent);
@@ -111,6 +119,10 @@ body {
 .header {
     grid-column: 2 / -2;
     margin-top: 4rem;
+
+    @media (min-width: 680px) {
+        margin-top: 2rem;
+    }
 }
 
 .header__image {
@@ -120,20 +132,10 @@ body {
         width: 100%;
         max-height: 40vh;
         object-fit: cover;
-    }
 
-}
-
-@media (min-width: 680px) {
-
-    .header {
-        margin-top: 2rem;
-    }
-
-    .header__image {
-
-        img {
+        @media (min-width: 680px) {
             max-height: 30vh;
         }
     }
+
 }

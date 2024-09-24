@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Job{% endblock %}
+{% block title %}
+    {{ job.title }}
+{% endblock %}
 
 {% block body %}
 
@@ -13,28 +15,30 @@
     <main class="main">
 
         <section class="section">
-            <h1>Job</h1>
 
-            <table class="table">
-                <tbody>
-                <tr>
-                    <th>Title</th>
-                    <td>{{ job.title }}</td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td>{{ job.description }}</td>
-                </tr>
-                <tr>
-                    <th>Fte</th>
-                    <td>{{ job.fte }}</td>
-                </tr>
-                </tbody>
-            </table>
+            <h1 class="heading heading--h1">{{ job.title }} / {{ job.fte }} %</h1>
+
+            <div class="features mb-4">
+
+                {% for feature in job.features %}
+
+                    <span class="feature">{{ feature.title }}</span>
+
+                {% endfor %}
+
+            </div>
+
+            <p class="mb-2">
+                {{ job.description }}
+            </p>
+
+            <div class="btn-group">
+                <a class="btn btn__apply" href="#">Apply Now</a>
+                <a class="btn btn__primary" href="{{ path('app_index') }}">Back</a>
+                <a class="btn btn__primary" href="{{ path('app_index') }}">Print as PDF</a>
+            </div>
 
         </section>
-
-        <a class="btn btn__apply" href="#">Apply Now</a>
 
     </main>
 
