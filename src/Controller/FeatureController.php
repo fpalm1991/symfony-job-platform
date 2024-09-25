@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/feature')]
-class FeatureController extends AbstractController
+final class FeatureController extends AbstractController
 {
     #[Route('/', name: 'app_feature_index', methods: ['GET'])]
     public function index(FeatureRepository $featureRepository): Response {
