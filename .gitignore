@@ -24,5 +24,6 @@
 ###> symfony/asset-mapper ###
 /public/assets/
 /public/image/
+/public/icons/
 /assets/vendor/
 ###< symfony/asset-mapper ###

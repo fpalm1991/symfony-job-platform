@@ -4,15 +4,21 @@
 
 {% block body %}
 
+    <header class="header">
+
+        {% include 'components/_navigation.html.twig' %}
+
+    </header>
+
     <main class="main">
 
         <section class="section">
 
-            <h1>Edit Feature</h1>
+            <h1 class="h1">Edit Feature</h1>
 
             {{ include('feature/_form.html.twig', {'button_label': 'Update'}) }}
 
-            <a href="{{ path('app_feature_index') }}">back to list</a>
+            <a href="{{ path('app_feature_index') }}">Back</a>
 
         </section>
 

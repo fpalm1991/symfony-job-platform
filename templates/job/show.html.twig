@@ -16,9 +16,9 @@
 
         <section class="section">
 
-            <h1 class="heading heading--h1">{{ job.title }} / {{ job.fte }} %</h1>
+            <h1 class="h1">{{ job.title }} / {{ job.fte }} %</h1>
 
-            <div class="features mb-4">
+            <div class="features">
 
                 {% for feature in job.features %}
 
@@ -32,10 +32,10 @@
                 {{ job.description }}
             </p>
 
-            <div class="btn-group">
-                <a class="btn btn__apply" href="#">Apply Now</a>
-                <a class="btn btn__primary" href="{{ path('app_index') }}">Back</a>
-                <a class="btn btn__primary" href="{{ path('app_index') }}">Print as PDF</a>
+            <div>
+                <a href="#">Apply Now</a>
+                <a href="{{ path('app_index') }}">Back</a>
+                <a href="{{ path('app_index') }}">Print as PDF</a>
             </div>
 
         </section>

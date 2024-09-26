@@ -13,9 +13,9 @@
     <main class="main">
 
         <section class="section">
-            <h1 class="heading heading--h1">Manage Open Positions</h1>
+            <h1 class="h1">Manage Open Positions</h1>
 
-            <table class="table table__admin">
+            <table class="table">
                 <thead>
                 <tr>
                     <th>Title</th>
@@ -27,7 +27,7 @@
                 {% for job in jobs %}
                     <tr>
                         <td>{{ job.title }}</td>
-                        <td class="table__text-center">{{ job.fte }}</td>
+                        <td>{{ job.fte }}</td>
                         <td>
                             <a href="{{ path('app_job_show', {'id': job.id}) }}">show</a>
                             <a href="{{ path('app_job_edit', {'id': job.id}) }}">edit</a>
@@ -43,7 +43,7 @@
             </table>
         </section>
 
-        <a class="btn btn__primary" href="{{ path('app_job_new') }}">Create new Job</a>
+        <a href="{{ path('app_job_new') }}">Create new Job</a>
 
     </main>
 
