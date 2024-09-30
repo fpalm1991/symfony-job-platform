@@ -6,6 +6,7 @@ use App\Entity\Job;
 use App\Form\JobType;
 use App\Repository\JobRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Mpdf\MpdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/job')]
 final class JobController extends AbstractController
 {
+
     #[Route(name: 'app_job_index', methods: ['GET'])]
     public function index(JobRepository $jobRepository): Response
     {
@@ -76,6 +78,22 @@ final class JobController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @throws MpdfException
+     */
+    #[Route('/pdf/{id}', name: 'app_job_pdf', methods: ['POST'])]
+    public function pdf(Job $job): Response {
+
+        $mpdf = new \Mpdf\Mpdf(['tempDir' => '/tmp']);
+        $mpdf->WriteHTML($this->renderView('job/pdf.html.twig', [
+            'job' => $job,
+        ]));
+        $mpdf->Output('job.pdf', 'D');
+
+        return $this->redirectToRoute('app_index', [], Response::HTTP_SEE_OTHER);
+    }
+
 }

@@ -6,12 +6,6 @@
 
 {% block body %}
 
-    <header class="header">
-
-        {% include 'components/_navigation.html.twig' %}
-
-    </header>
-
     <main class="main">
 
         <section class="section">
@@ -32,19 +26,8 @@
                 {{ job.description }}
             </p>
 
-            <div>
-                <a href="#">Apply Now</a>
-                <a href="{{ path('app_index') }}">Back</a>
-
-                <form action="{{ path('app_job_pdf', {'id': job.id}) }}" method="post" data-turbo="false">
-                    <input type="hidden" name="job" value="{{ job.id }}">
-                    <button>PDF</button>
-                </form>
-            </div>
-
         </section>
 
     </main>
-
 
 {% endblock %}
