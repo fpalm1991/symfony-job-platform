@@ -87,11 +87,13 @@ final class JobController extends AbstractController
     #[Route('/pdf/{id}', name: 'app_job_pdf', methods: ['POST'])]
     public function pdf(Job $job): Response {
 
-        $mpdf = new \Mpdf\Mpdf(['tempDir' => '/tmp']);
+        $mpdf = new \Mpdf\Mpdf(['tempDir' => __DIR__ . '/../../var/tmp']);
         $mpdf->WriteHTML($this->renderView('job/pdf.html.twig', [
             'job' => $job,
         ]));
-        $mpdf->Output('job.pdf', 'D');
+
+        // Force a file download with the name given by $filename
+        $mpdf->Output('job.pdf', \Mpdf\Output\Destination::DOWNLOAD);
 
         return $this->redirectToRoute('app_index', [], Response::HTTP_SEE_OTHER);
     }

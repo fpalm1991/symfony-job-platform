@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create new user{% endblock %}
+
+{% block body %}
+
+    <header class="header">
+
+        {% include 'components/_navigation.html.twig' %}
+
+    </header>
+
+    <main class="main">
+
+        <section class="section">
+
+            <h1 class="h1">Create New User</h1>
+
+            {{ include ('security/_form.html.twig') }}
+
+        </section>
+
+    </main>
+
+{% endblock %}
