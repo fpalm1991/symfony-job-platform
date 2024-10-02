@@ -1,4 +1,6 @@
-<nav class="navigation">
+{% if is_granted('ROLE_ADMIN') %}
+
+<nav class="navigation navigation--admin mb-2">
     <ul class="navigation__list">
         <li class="navigation__item">
             <a href="{{ path('app_job_index') }}">
@@ -10,10 +12,23 @@
                 Features
             </a>
         </li>
+        <li class="navigation__item">
+            <a href="{{ path('app_new_user') }}">
+                New User
+            </a>
+        </li>
+
+        <li class="navigation__item">
+            <a href="{{ path('app_logout') }}">
+                Log out
+            </a>
+        </li>
     </ul>
 </nav>
 
-<nav class="navigation">
+{% endif %}
+
+<nav class="navigation mb-4">
 
     <a href="{{ path( 'app_index' ) }}">
         <div class="navigation__logo"></div>

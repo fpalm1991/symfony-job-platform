@@ -1,0 +1,29 @@
+<footer class="footer">
+    <nav class="navigation">
+        <ul class="navigation__list">
+
+            <li class="navigation__item">
+                <a href="{{ path('app_index') }}">
+                    Data Protection
+                </a>
+            </li>
+
+            <li class="navigation__item">
+                <a href="{{ path('app_index') }}">
+                    Imprint
+                </a>
+            </li>
+
+            {% if not app.user %}
+
+                <li class="navigation__item">
+                    <a href="{{ path('app_login') }}">
+                        Login
+                    </a>
+                </li>
+
+            {% endif %}
+
+        </ul>
+    </nav>
+</footer>

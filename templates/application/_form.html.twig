@@ -1,0 +1,4 @@
+{{ form_start(form, { 'attr': { 'class': 'form' } }) }}
+    {{ form_widget(form) }}
+    <button>{{ button_label|default('Apply') }}</button>
+{{ form_end(form) }}
