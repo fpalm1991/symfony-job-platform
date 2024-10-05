@@ -81,6 +81,17 @@ final class JobController extends AbstractController
         return $this->redirectToRoute('app_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    // app_job_applications
+    #[Route('/applications/{id}', name: 'app_job_applications', methods: ['GET'])]
+    public function applications(Job $job, EntityManagerInterface $entityManager): Response {
+        $applications = $job->getApplications();
+
+        return $this->render('job/applications.html.twig', [
+            'job' => $job,
+            'applications' => $applications,
+        ]);
+    }
+
     /**
      * @throws MpdfException
      */

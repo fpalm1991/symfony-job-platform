@@ -4,9 +4,10 @@ namespace App\Form;
 
 use App\Entity\Application;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ApplicationType extends AbstractType
 {
@@ -14,7 +15,23 @@ class ApplicationType extends AbstractType
     {
         $builder
             ->add('applicant', ApplicationUserType::class, [])
-            ->add('curriculum_vitae', TextType::class)
+            ->add('curriculum_vitae', FileType::class, [
+                'label' => 'Curriculum Vitae (PDF file)',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF file',
+                    ])
+                ],
+            ])
         ;
     }
 

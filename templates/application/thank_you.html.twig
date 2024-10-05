@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApplicationController!{% endblock %}
+
+{% block body %}
+    <style></style>
+
+    <header class="header">
+
+        {% include 'components/_navigation.html.twig' %}
+
+    </header>
+
+    <main class="main">
+
+        <section class="section">
+
+            <h1 class="h1">Thank you for your application</h1>
+
+            <p>We'll get back to you as quick as possible.</p>
+
+            <a href="{{ path('app_index') }}">
+                Back
+            </a>
+
+        </section>
+
+    </main>
+
+{% endblock %}

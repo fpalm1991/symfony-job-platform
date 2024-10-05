@@ -33,7 +33,7 @@
             </p>
 
             <div>
-                <a href="{{ path('app_job_apply', {'id': job.id}) }}">Apply Now</a>
+                <a href="{{ path('app_job_application_apply', {'id': job.id}) }}">Apply Now</a>
                 <a href="{{ path('app_index') }}">Back</a>
 
                 <form action="{{ path('app_job_pdf', {'id': job.id}) }}" method="post" data-turbo="false">
