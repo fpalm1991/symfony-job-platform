@@ -22,6 +22,9 @@ class Application
     #[ORM\ManyToOne(inversedBy: 'applications')]
     private ?Job $job = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $letter_of_motivation = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Application
     public function setJob(?Job $job): static
     {
         $this->job = $job;
+
+        return $this;
+    }
+
+    public function getLetterOfMotivation(): ?string
+    {
+        return $this->letter_of_motivation;
+    }
+
+    public function setLetterOfMotivation(string $letter_of_motivation): static
+    {
+        $this->letter_of_motivation = $letter_of_motivation;
 
         return $this;
     }

@@ -14,7 +14,7 @@ class ApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('applicant', ApplicationUserType::class, [])
+            ->add('applicant', ApplicationUserType::class)
             ->add('curriculum_vitae', FileType::class, [
                 'label' => 'Curriculum Vitae (PDF file)',
 
@@ -32,7 +32,21 @@ class ApplicationType extends AbstractType
                     ])
                 ],
             ])
-        ;
+            ->add('letter_of_motivation', FileType::class, [
+                'label' => 'Letter of motivation (PDF file)',
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF file',
+                    ])
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

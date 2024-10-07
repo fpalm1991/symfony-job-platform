@@ -6,11 +6,12 @@ use App\Entity\Application;
 use App\Entity\Job;
 use App\Entity\User;
 use App\Form\ApplicationType;
+use App\lib\ApplicationFile;
+use App\lib\FileHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -51,20 +52,36 @@ class ApplicationController extends AbstractController
 
             // Handle file uploads
             $cvFile = $form->get('curriculum_vitae')->getData();
+            $letter_of_motivation = $form->get('letter_of_motivation')->getData();
+
+            $successfulFileUpload = false;
 
             if ($cvFile) {
-                $originalFilename = pathinfo($cvFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$cvFile->guessExtension();
+                $successfulFileUpload = FileHelper::saveFileOfApplication(
+                    application: $application,
+                    applicationFileType: ApplicationFile::CV,
+                    fileName: $cvFile,
+                    slugger: $slugger,
+                    applicationFilesDirectory: $applicationFilesDirectory
+                );
+            }
 
-                // Move the file to the directory where brochures are stored
-                try {
-                    $cvFile->move($applicationFilesDirectory, $newFilename);
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+            if ( ! $successfulFileUpload ) {
+                return $this->redirectToRoute('app_index');
+            }
 
-                $application->setCurriculumVitae($newFilename);
+            if ($letter_of_motivation) {
+                $successfulFileUpload = FileHelper::saveFileOfApplication(
+                    application: $application,
+                    applicationFileType: ApplicationFile::Motivation,
+                    fileName: $letter_of_motivation,
+                    slugger: $slugger,
+                    applicationFilesDirectory: $applicationFilesDirectory
+                );
+            }
+
+            if ( ! $successfulFileUpload ) {
+                return $this->redirectToRoute('app_index');
             }
 
             // Set applicant details from form
@@ -86,7 +103,7 @@ class ApplicationController extends AbstractController
             $application->setApplicant($user);
 
             // Persist the user and application
-            $entityManager->persist($user); // Change to persist $user instead of $applicant
+            $entityManager->persist($user);
             $entityManager->persist($application);
             $entityManager->flush();
 

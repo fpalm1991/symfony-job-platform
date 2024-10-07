@@ -28,6 +28,7 @@
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>Curriculum Vitae</th>
+                            <th>Letter of Motivation</th>
                         </tr>
                     </thead>
 
@@ -41,11 +42,16 @@
                                 <td>{{ application.applicant.email }}</td>
 
                                 <!-- TODO: Make sure these files are not indexed and only accessible for Admins -->
-                                <th>
+                                <td>
                                     <a href="/uploads/applications/{{ application.curriculumVitae }}" target="_blank">
                                         Curriculum Vitae {{ application.applicant.firstName }} {{ application.applicant.lastName }}
                                     </a>
-                                </th>
+                                </td>
+                                <td>
+                                    <a href="/uploads/applications/{{ application.letterOfMotivation }}" target="_blank">
+                                        Letter of Motivation {{ application.applicant.firstName }} {{ application.applicant.lastName }}
+                                    </a>
+                                </td>
                             </tr>
 
                         {% endfor %}
