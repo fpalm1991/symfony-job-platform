@@ -6,16 +6,13 @@
     box-sizing: border-box;
 }
 
-.mb-2 {
-    margin-bottom: 2rem;
-}
-
-.mb-4 {
-    margin-bottom: 4rem;
-}
-
 :root {
     --color-main: #323232;
+    --color-main-light: #f1f1f1;
+    --color-main-accent: #d3890c;
+    --color-main-acent-hover: #604103;
+    --color-secondary-accent: #1d5add;
+    --color-secondary-acent-hover: #031232;
 }
 
 body {
@@ -37,8 +34,6 @@ body {
 
 .header__image {
 
-    margin-bottom: 2rem;
-
     img {
         height: 20rem;
         width: 100%;
@@ -47,136 +42,58 @@ body {
 
 }
 
-.main {
-    margin-bottom: 2rem;
-}
-
 .footer {
-    background-color: aliceblue;
     padding: 1rem;
     border-radius: 12px;
 }
 
-.h1,
-.h2 {
-    margin-bottom: 1rem;
-}
-
 .navigation {
-
-    display: flex;
     align-items: center;
-
-    .navigation__list {
-        display: flex;
-        justify-content: space-evenly;
-        list-style: none;
-        flex: 1;
-    }
-
+    margin-bottom: 1rem;
 
     .navigation__logo {
-        width: 60px;
-        height: 60px;
-        background-color: green;
+        height: 72px;
+        width: 72px;
+        background-color: #060660;
+    }
+}
+
+.d-inline-block {
+    display: inline-block;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
+
+.mb-4 {
+    margin-bottom: 4rem;
+}
+
+.feature {
+    background-color: rgba(144, 144, 239, 0.09);
+    padding: 6px 24px;
+    border-radius: 8px;
+}
+
+.job {
+
+    .job__link {
+        display: inline-block;
+        margin-bottom: 1rem;
     }
 
 }
 
-.navigation--admin {
-    background-color: rgba(237, 235, 95, 0.57);
-    padding: 2px 22px;
-    border-radius: 12px;
-    font-size: .8rem;
-}
-
-.jobs {
-
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
-
-    .job {
-        border: 1px solid black;
-        padding: 1rem 2.2rem;
-        border-radius: 8px;
-
-        .link {
-            margin-bottom: 1rem;
-        }
-    }
-
-}
-
-.features {
-
-    .feature {
-        background-color: #d8d8d8;
-        padding: 4px 12px;
-        border-radius: 8px;
-    }
-
+.download {
+    display: inline-block;
 }
 
 .table {
-    width: 100%;
-    border-collapse: collapse;
-
-    td,
-    th {
-        border: 1px solid black;
-    }
-
-    .delete {
-        display: inline-block;
-    }
+    margin-top: 2rem;
 }
 
-.form {
-
-    #feature,
-    #job,
-    #application {
-        display: flex;
-        flex-direction: column;
-        row-gap: 1rem;
-
-        div {
-            display: flex;
-            row-gap: 2rem;
-
-            label {
-                margin-right: 1rem;
-            }
-
-            input[type="text"],
-            textarea {
-                padding: 4px 12px;
-                width: 100%;
-            }
-
-            textarea {
-                height: 10rem;
-            }
-        }
-    }
-
-    #job {
-
-        #job_features {
-
-            label {
-                margin-right: 1rem;
-                margin-left: 4px;
-            }
-
-        }
-    }
-
-}
-
-.link {
-    display: inline-blocK;
-    text-decoration: none;
-    color: var(--color-main);
+.delete {
+    padding-left: 1rem;
+    display: inline-block;
 }

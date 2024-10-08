@@ -1,24 +1,24 @@
 {% if is_granted('ROLE_ADMIN') %}
 
 <nav class="navigation navigation--admin mb-2">
-    <ul class="navigation__list">
-        <li class="navigation__item">
+    <ul>
+        <li>
             <a href="{{ path('app_job_index') }}">
                 Jobs
             </a>
         </li>
-        <li class="navigation__item">
+        <li>
             <a href="{{ path('app_feature_index') }}">
                 Features
             </a>
         </li>
-        <li class="navigation__item">
+        <li>
             <a href="{{ path('app_new_user') }}">
                 New User
             </a>
         </li>
 
-        <li class="navigation__item">
+        <li>
             <a href="{{ path('app_logout') }}">
                 Log out
             </a>
@@ -28,19 +28,19 @@
 
 {% endif %}
 
-<nav class="navigation mb-4">
+<nav class="navigation">
 
     <a href="{{ path( 'app_index' ) }}">
         <div class="navigation__logo"></div>
     </a>
 
-    <ul class="navigation__list">
-        <li class="navigation__item">
+    <ul>
+        <li>
             <a href="{{ path('app_page_about') }}">
                 About
             </a>
         </li>
-        <li class="navigation__item">
+        <li>
             <a href="{{ path('app_page_contact') }}">
                 Contact
             </a>

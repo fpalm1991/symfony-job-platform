@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <header class="header">
+    <header class="header mb-2">
 
         {% include 'components/_navigation.html.twig' %}
 
@@ -13,8 +13,6 @@
     <main class="main">
 
         <section class="section">
-
-            <h1 class="h1">Create New User</h1>
 
             {{ include ('security/_form.html.twig') }}
 

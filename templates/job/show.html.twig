@@ -18,7 +18,7 @@
 
             <h1 class="h1">{{ job.title }} / {{ job.fte }} %</h1>
 
-            <div class="features">
+            <div class="features mb-2">
 
                 {% for feature in job.features %}
 
@@ -33,13 +33,23 @@
             </p>
 
             <div>
-                <a href="{{ path('app_job_application_apply', {'id': job.id}) }}">Apply Now</a>
-                <a href="{{ path('app_index') }}">Back</a>
 
-                <form action="{{ path('app_job_pdf', {'id': job.id}) }}" method="post" data-turbo="false">
-                    <input type="hidden" name="job" value="{{ job.id }}">
-                    <button>PDF</button>
-                </form>
+                <div class="mb-2">
+                    <a role="button" class="contrast" href="{{ path('app_job_application_apply', {'id': job.id}) }}">Apply Now</a>
+
+                </div>
+
+
+                <div>
+                    <a role="button" class="contrast outline" href="{{ path('app_index') }}">Back</a>
+
+                    <form class="download" action="{{ path('app_job_pdf', {'id': job.id}) }}" method="post" data-turbo="false">
+                        <input type="hidden" name="job" value="{{ job.id }}">
+                        <button type="submit" class="contrast outline">Get PDF</button>
+                    </form>
+                </div>
+
+
             </div>
 
         </section>

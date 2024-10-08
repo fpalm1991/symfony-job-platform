@@ -1,4 +1,15 @@
-{{ form_start(form, { 'attr': { 'class': 'form' } }) }}
-    {{ form_widget(form) }}
-    <button>{{ button_label|default('Apply') }}</button>
+{{ form_start(form, { 'attr': { 'class': 'form form__application' } }) }}
+
+    {{ form_row(form.applicant.first_name, {'attr': {'class': 'input'}}) }}
+
+    {{ form_row(form.applicant.last_name, {'attr': {'class': 'input'}}) }}
+
+    {{ form_row(form.applicant.email, {'attr': {'class': 'input'}}) }}
+
+    {{ form_row(form.curriculum_vitae, {'attr': {'class': 'input'}}) }}
+
+    {{ form_row(form.letter_of_motivation, {'attr': {'class': 'input'}}) }}
+
+    <button class="contrast">{{ button_label|default('Apply') }}</button>
+
 {{ form_end(form) }}

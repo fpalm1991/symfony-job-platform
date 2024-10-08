@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -34,7 +35,7 @@ class ApplicationController extends AbstractController
         Job $job, Request $request,
         EntityManagerInterface $entityManager,
         SluggerInterface $slugger,
-        #[Autowire('%kernel.project_dir%/public/uploads/applications')] string $applicationFilesDirectory,
+        #[Autowire('%kernel.project_dir%/var/uploads/applications')] string $applicationFilesDirectory,
     ): Response
     {
         // Create the application form
@@ -123,5 +124,25 @@ class ApplicationController extends AbstractController
     #[Route('/apply/thank-you', name: 'app_job_application_thank_you', methods: ['GET'])]
     public function thankYou(): Response {
         return $this->render('application/thank_you.html.twig');
+    }
+
+
+    #[Route('/show-application/{fileName}}', name: 'show_application_document', methods: ['GET'])]
+    public function showApplication(string $fileName): Response
+    {
+        $filePath = $this->getParameter('kernel.project_dir') . '/var/uploads/applications/' . $fileName;
+
+        if ( ! file_exists($filePath) ) {
+            throw new FileNotFoundException('File not found.');
+        }
+
+        return new Response(
+            file_get_contents($filePath),
+            200,
+            [
+                'Content-Type' => mime_content_type($filePath),
+                'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
+            ]
+        );
     }
 }

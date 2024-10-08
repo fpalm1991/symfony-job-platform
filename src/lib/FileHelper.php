@@ -7,6 +7,8 @@ namespace App\lib;
 use App\Entity\Application;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class FileHelper
 {
@@ -30,6 +32,7 @@ class FileHelper
             return false;
         }
 
+        // Update application entity
         if ($applicationFileType === ApplicationFile::Motivation) {
             $application->setLetterOfMotivation($newFilename);
         } else if ($applicationFileType === ApplicationFile::CV) {
