@@ -20,12 +20,12 @@
 
             <div class="jobs">
 
-                {% for job in jobs %}
+                {% for job in pagination %}
 
                     <article class="job">
                         <h3 class="job__title">{{ job.title }} <span class="job-teaser__fte">({{ job.fte }} %)</span></h3>
                         <p class="job__description">{{ job.description|slice(0, 120) }}...</p>
-                        <a class="job__link" href="{{ path('app_job_show', {'id': job.id}) }}">Learn more</a>
+                        <a role="button" class="job__link contrast" href="{{ path('app_job_show', {'id': job.id}) }}">Learn more</a>
 
                         <div class="features">
 
@@ -40,6 +40,11 @@
                     </article>
 
                 {% endfor %}
+
+                {# Pagination controls #}
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
 
             </div>
         </section>

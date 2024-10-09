@@ -20,10 +20,12 @@ body {
     line-height: 1.8;
 }
 
-.container {
+.container-layout {
     margin: 4rem auto;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto 1fr auto;
+    min-height: calc(100vh - 8rem);
 }
 
 .header,
@@ -35,7 +37,7 @@ body {
 .header__image {
 
     img {
-        height: 20rem;
+        height: 14rem;
         width: 100%;
         object-fit: cover;
     }
@@ -49,7 +51,7 @@ body {
 
 .navigation {
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.8rem;
 
     .navigation__logo {
         height: 72px;
@@ -78,11 +80,18 @@ body {
 
 .job {
 
+    padding: 2.2rem 3.8rem;
+    transition: all .2s;
+
     .job__link {
         display: inline-block;
         margin-bottom: 1rem;
     }
 
+}
+
+.job:hover {
+    transform: scale(1.01);
 }
 
 .download {
@@ -91,9 +100,25 @@ body {
 
 .table {
     margin-top: 2rem;
+    margin-bottom: 4rem;
 }
 
 .delete {
     padding-left: 1rem;
     display: inline-block;
+}
+
+.btn,
+button.btn,
+a[role=button] {
+    font-size: .8rem;
+}
+
+.pagination {
+    text-align: center;
+
+    .first,
+    .last {
+        display: none;
+    }
 }
