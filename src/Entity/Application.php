@@ -77,4 +77,8 @@ class Application
 
         return $this;
     }
+
+    public function __toString(): string {
+        return $this->getApplicant()->getFirstname() . " " . $this->getApplicant()->getLastname() . " applied for " . $this->getJob();
+    }
 }

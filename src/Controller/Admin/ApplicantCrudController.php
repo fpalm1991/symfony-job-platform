@@ -9,14 +9,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use \EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
-class UserCrudController extends AbstractCrudController
+class ApplicantCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
@@ -25,40 +23,33 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $roles = [
-            'Applicant' => 'ROLE_APPLICANT',
-            'Admin' => 'ROLE_ADMIN',
-            'User' => 'ROLE_USER',
-        ];
-
-        $fields = [
+        return [
             IdField::new('id'),
             TextField::new('first_name'),
             TextField::new('last_name'),
-            EmailField::new('email'),
-            ChoiceField::new('roles')
-                ->setChoices($roles)
-                ->allowMultipleChoices()
-                ->setLabel('User Roles'),
+            TextField::new('email'),
+            AssociationField::new('applications')
+                ->setLabel('Applications')
+                ->setCrudController(ApplicationCrudController::class),
         ];
-
-        if ($pageName === Crud::PAGE_NEW) {
-            $fields[] = TextField::new('password')->setLabel('Password');
-        }
-
-        return $fields;
     }
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         $qb = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
 
-        // Filter out users whose roles include ROLE_APPLICANT using a NOT LIKE query
-        $qb->andWhere('entity.roles NOT LIKE :role')
+        // Filter users whose roles include ROLE_APPLICANT using a LIKE query
+        $qb->andWhere('entity.roles LIKE :role')
             ->setParameter('role', '%ROLE_APPLICANT%');
 
         return $qb;
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setEntityLabelInSingular('Applicant')
+            ->setEntityLabelInPlural('Applicants');
 
+    }
 }

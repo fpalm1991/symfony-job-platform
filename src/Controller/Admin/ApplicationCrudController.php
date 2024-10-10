@@ -22,6 +22,17 @@ class ApplicationCrudController extends AbstractCrudController
         return [
             // IdField::new('id'),
             // TextField::new('curriculum_vitae', 'Curriculum Vitae'),
+
+            AssociationField::new('job'),
+
+            AssociationField::new('applicant')
+                ->setCrudController(ApplicantCrudController::class)
+                ->setLabel('Applicant')
+                ->formatValue(function ($value, $entity) {
+                    return $entity->getApplicant()->getFirstName() . " " . $entity->getApplicant()->getLastName();
+                }),
+
+
             TextField::new('curriculum_vitae', 'Curriculum Vitae')
                 ->formatValue(function ($value, $entity) {
                     return sprintf(
@@ -40,10 +51,6 @@ class ApplicationCrudController extends AbstractCrudController
                     );
                 }),
 
-            AssociationField::new('applicant')->setLabel('Applicant')
-                ->formatValue(function ($value, $entity) {
-                    return $entity->getApplicant()->getFirstName() . " " . $entity->getApplicant()->getLastName();
-                }),
         ];
     }
 

@@ -22,7 +22,7 @@ class DashboardController extends AbstractDashboardController
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
      */
-    #[Route('/admin', name: 'admin')]
+    #[Route('/admin', name: 'app_job_admin')]
     public function index(): Response
     {
         // return parent::index();
@@ -56,18 +56,19 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Job Dashboard', 'fa fa-home');
 
         yield MenuItem::section('Job');
         yield MenuItem::linkToCrud('Job', 'fa fa-tags', Job::class);
-
-        yield MenuItem::section('Feature');
         yield MenuItem::linkToCrud('Feature', 'fa fa-paperclip', Feature::class);
 
-        yield MenuItem::section('Application');
-        yield MenuItem::linkToCrud('Application', 'fa fa-file', Application::class);
+        yield MenuItem::section('Applications');
+        yield MenuItem::linkToCrud('Applications', 'fa fa-file', Application::class);
+        yield MenuItem::linkToCrud('Applicants', 'fa fa-users', User::class)
+            ->setController(ApplicantCrudController::class);
 
         yield MenuItem::section('User');
-        yield MenuItem::linkToCrud('User', 'fa fa-user', User::class);
+        yield MenuItem::linkToCrud('User', 'fa fa-user', User::class)
+            ->setController(UserCrudController::class);
     }
 }
