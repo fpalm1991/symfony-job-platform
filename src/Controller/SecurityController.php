@@ -34,28 +34,5 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route(path: '/new-user', name: 'app_new_user', methods: ['GET', 'POST'])]
-    function createNewUser(Request $request, EntityManagerInterface $entityManager): Response {
-
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(password_hash($form->get('password')->getData(), PASSWORD_DEFAULT));
-            $user->setRoles($form->get('roles')->getData());
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_job_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('security/new_user.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
-
 
 }
