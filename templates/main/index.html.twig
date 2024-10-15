@@ -18,7 +18,9 @@
 
             <h1 class="h1 mb-2">Discover Our Open Positions</h1>
 
-            <div class="jobs">
+            {% if pagination.totalItemCount > 0 %}
+
+                <div class="jobs">
 
                 {% for job in pagination %}
 
@@ -47,6 +49,15 @@
                 </div>
 
             </div>
+
+            {% else %}
+
+                <div class="jobs">
+                    <p>Currently, no open positions are available.</p>
+                </div>
+
+            {% endif %}
+
         </section>
 
     </main>

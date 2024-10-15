@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: JobRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Job
 {
     #[ORM\Id]
@@ -36,6 +37,12 @@ class Job
      */
     #[ORM\OneToMany(targetEntity: Application::class, mappedBy: 'job')]
     private Collection $applications;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $headerImage = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
     {
@@ -140,5 +147,30 @@ class Job
 
     public function __toString(): string {
         return $this->getTitle() ?? "";
+    }
+
+    public function getHeaderImage(): ?string
+    {
+        return $this->headerImage;
+    }
+
+    public function setHeaderImage(?string $image): static
+    {
+        $this->headerImage = $image;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAt(): static
+    {
+        $this->createdAt = new \DateTimeImmutable();
+
+        return $this;
     }
 }

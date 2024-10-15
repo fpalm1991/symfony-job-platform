@@ -10,6 +10,12 @@
 
         {% include 'components/_navigation.html.twig' %}
 
+        {% if job.headerImage %}
+            <div class="header__image mb-4">
+                <img src="{{ asset('/image/jobs/' ~ job.headerImage) }}" alt="{{ job.title }}">
+            </div>
+        {% endif %}
+
     </header>
 
     <main class="main">

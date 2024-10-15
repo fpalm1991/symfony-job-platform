@@ -16,6 +16,13 @@ class JobRepository extends ServiceEntityRepository
         parent::__construct($registry, Job::class);
     }
 
+    public function findAllOrderedByDate(): array {
+        return $this->createQueryBuilder('j')
+            ->orderBy('j.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Job[] Returns an array of Job objects
     //     */

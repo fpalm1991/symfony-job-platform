@@ -5,7 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\Job;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -18,13 +21,16 @@ class JobCrudController extends AbstractCrudController
         return Job::class;
     }
 
-
     public function configureFields(string $pageName): iterable
     {
+
         return [
-            // IdField::new('id'),
             TextField::new('title'),
             IntegerField::new('fte'),
+            TextAreaField::new('description'),
+            ImageField::new('headerImage', 'Header Image for Job')
+                ->setUploadDir('public/image/jobs/')
+                ->setBasePath('/image/jobs/'),
             AssociationField::new('features')
                 ->setFormTypeOptions([
                     'by_reference' => false,
