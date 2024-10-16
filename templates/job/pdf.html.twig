@@ -6,21 +6,21 @@
 
 {% block body %}
 
+    <header class="header">
+
+        {% if job.headerImage %}
+            <div class="header__image mb-4">
+                <img src="{{ asset('/image/jobs/' ~ job.headerImage) }}" alt="{{ job.title }}">
+            </div>
+        {% endif %}
+
+    </header>
+
     <main class="main">
 
         <section class="section">
 
             <h1 class="h1">{{ job.title }} / {{ job.fte }} %</h1>
-
-            <div class="features">
-
-                {% for feature in job.features %}
-
-                    <span class="feature">{{ feature.title }}</span>
-
-                {% endfor %}
-
-            </div>
 
             <p class="mb-2">
                 {{ job.description }}

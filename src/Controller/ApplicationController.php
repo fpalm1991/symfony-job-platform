@@ -8,13 +8,18 @@ use App\Entity\User;
 use App\Form\ApplicationType;
 use App\lib\ApplicationFile;
 use App\lib\FileHelper;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -29,13 +34,17 @@ class ApplicationController extends AbstractController
 
     /**
      * @throws RandomException
+     * @throws TransportExceptionInterface
      */
     #[Route('/apply/{id<\d+>}', name: 'app_job_application_apply', methods: ['GET', 'POST'])]
     public function applyForJob(
-        Job $job, Request $request,
+        Job $job,
+        Request $request,
+        UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         SluggerInterface $slugger,
         #[Autowire('%kernel.project_dir%/var/uploads/applications')] string $applicationFilesDirectory,
+        MailerInterface $mailer
     ): Response
     {
         // Create the application form
@@ -44,9 +53,8 @@ class ApplicationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Creating a new Application and User entity
+            // Creating a new Application
             $application = new Application();
-            $user = new User();
 
             // Retrieve data from the form
             $formData = $form->getData();
@@ -87,9 +95,17 @@ class ApplicationController extends AbstractController
 
             // Set applicant details from form
             $applicantData = $formData->getApplicant();
-            $user->setFirstName($applicantData->getFirstName());
-            $user->setLastName($applicantData->getLastName());
-            $user->setEmail($applicantData->getEmail());
+
+            // Try to find user in database
+            $user = $userRepository->findByEmail($applicantData->getEmail());
+
+            // If new user, create new user and update user data
+            if ( ! $user ) {
+                $user = new User();
+                $user->setFirstName($applicantData->getFirstName());
+                $user->setLastName($applicantData->getLastName());
+                $user->setEmail($applicantData->getEmail());
+            }
 
             // Generate a temporary password for the applicant
             $temporaryPassword = bin2hex(random_bytes(20));
@@ -108,8 +124,15 @@ class ApplicationController extends AbstractController
             $entityManager->persist($application);
             $entityManager->flush();
 
-            // TODO: Send the temporary password to the user's email
-            // $this->sendEmail($user->getEmail(), $temporaryPassword);
+            // Send confirmation email
+            $email = (new TemplatedEmail())
+                ->from(new Address('application@example.com', 'Test Company'))
+                ->to($applicantData->getEmail())
+                ->subject('Your application has been submitted')
+                ->htmlTemplate('emails/application.html.twig')
+                ->context(['job' => $job, 'application' => $application]);
+
+            $mailer->send($email);
 
             return $this->redirectToRoute('app_job_application_thank_you');
         }

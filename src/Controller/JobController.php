@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Job;
-use App\Repository\JobRepository;
 use Mpdf\MpdfException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
