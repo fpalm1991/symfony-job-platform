@@ -35,7 +35,7 @@ class Job
     /**
      * @var Collection<int, Application>
      */
-    #[ORM\OneToMany(targetEntity: Application::class, mappedBy: 'job')]
+    #[ORM\OneToMany(targetEntity: Application::class, mappedBy: 'job', cascade: ['remove'], orphanRemoval: true)]
     private Collection $applications;
 
     #[ORM\Column(length: 255, nullable: true)]

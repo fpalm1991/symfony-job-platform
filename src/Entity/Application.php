@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\ApplicationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Filesystem\Filesystem;
 
 #[ORM\Entity(repositoryClass: ApplicationRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Application
 {
     #[ORM\Id]
@@ -28,6 +30,25 @@ class Application
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    #[ORM\PreRemove]
+    public function removeFiles(): void
+    {
+        $filesystem = new Filesystem();
+
+        // Assuming the files are stored locally and their paths are stored in the entity
+        $cvFilePath = __DIR__ . '/../../var/uploads/applications/' . $this->getCurriculumVitae();
+        $motivationLetterFilePath = __DIR__ . '/../../var/uploads/applications/' . $this->getLetterOfMotivation();
+
+        // Check if the files exist and remove them
+        if ($filesystem->exists($cvFilePath)) {
+            $filesystem->remove($cvFilePath);
+        }
+
+        if ($filesystem->exists($motivationLetterFilePath)) {
+            $filesystem->remove($motivationLetterFilePath);
+        }
     }
 
     public function getCurriculumVitae(): ?string

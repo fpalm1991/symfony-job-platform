@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -105,15 +106,15 @@ class ApplicationController extends AbstractController
                 $user->setFirstName($applicantData->getFirstName());
                 $user->setLastName($applicantData->getLastName());
                 $user->setEmail($applicantData->getEmail());
+
+                // Generate a temporary password for the applicant
+                $temporaryPassword = bin2hex(random_bytes(20));
+                $hashedPassword = $this->passwordGenerator->hashPassword($user, $temporaryPassword);
+                $user->setPassword($hashedPassword);
+
+                // Assign ROLE_APPLICANT to the user
+                $user->setRoles(['ROLE_APPLICANT']);
             }
-
-            // Generate a temporary password for the applicant
-            $temporaryPassword = bin2hex(random_bytes(20));
-            $hashedPassword = $this->passwordGenerator->hashPassword($user, $temporaryPassword);
-            $user->setPassword($hashedPassword);
-
-            // Assign ROLE_APPLICANT to the user
-            $user->setRoles(['ROLE_APPLICANT']);
 
             // Set the Job associated with the Application
             $application->setJob($job);
@@ -124,7 +125,7 @@ class ApplicationController extends AbstractController
             $entityManager->persist($application);
             $entityManager->flush();
 
-            // Send confirmation email
+            // Send confirmation email to applicant
             $email = (new TemplatedEmail())
                 ->from(new Address('application@example.com', 'Test Company'))
                 ->to($applicantData->getEmail())
@@ -133,6 +134,20 @@ class ApplicationController extends AbstractController
                 ->context(['job' => $job, 'application' => $application]);
 
             $mailer->send($email);
+
+            // Send update email to admins
+            $admins = $userRepository->findAdmins();
+
+            foreach ($admins as $admin) {
+                $email = (new Email())
+                    ->from(new Address('application@example.com', 'Test Company'))
+                    ->to($applicantData->getEmail())
+                    ->subject("New Application for " . $job->getTitle())
+                    ->html("<p>New Application for " . $job->getTitle() . " by " . $user->getFirstName() . " " . $user->getLastName() . " has been submitted.</p>");
+
+                $mailer->send($email);
+
+            }
 
             return $this->redirectToRoute('app_job_application_thank_you');
         }

@@ -6,10 +6,13 @@ use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use \EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -24,7 +27,6 @@ class ApplicantCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
             TextField::new('first_name'),
             TextField::new('last_name'),
             TextField::new('email'),
@@ -50,6 +52,13 @@ class ApplicantCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Applicant')
             ->setEntityLabelInPlural('Applicants');
+    }
 
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            // ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->disable(Action::NEW)
+            ->disable(Action::EDIT);
     }
 }
