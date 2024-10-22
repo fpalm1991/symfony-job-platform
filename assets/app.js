@@ -7,5 +7,6 @@ import './bootstrap.js';
  */
 
 import './styles/app.css';
+import './styles/typography.css';
 
 console.log('Welcome, traveler!');

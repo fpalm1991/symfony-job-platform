@@ -1,3 +1,23 @@
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch(`${window.location.origin}/company-info`)
+            .then(response => response.json())
+            .then(data => {
+                const headerImage = data[0].headerImage
+                const companyName = data[0].name
+                if (headerImage) {
+                    const headerImageElement = document.querySelector('.header__image img');
+
+                    headerImageElement.src = `/image/company/${headerImage}`
+                    headerImageElement.alt = companyName ? companyName : ''
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching company info:', error)
+            });
+    });
+</script>
+
 <div class="header__image mb-4">
-    <img src="{{ asset('image/header-example-image.jpg') }}" alt="Company image">
+    <img src="{{ asset('image/header-placeholder.jpg') }}" alt="">
 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
 use App\Entity\Job;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -28,6 +29,14 @@ final class MainController extends AbstractController
         return $this->render('main/index.html.twig', [
             'pagination' => $pagination,
         ]);
+    }
+
+
+    #[Route('/company-info', name: 'app_company_info', methods: ['GET'])]
+    public function companyInfo(EntityManagerInterface $entityManager): Response {
+        $companyInformation = $entityManager->getRepository(Company::class)->findAll();
+
+        return $this->json($companyInformation);
     }
 
 }

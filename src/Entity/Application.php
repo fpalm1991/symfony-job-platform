@@ -37,11 +37,9 @@ class Application
     {
         $filesystem = new Filesystem();
 
-        // Assuming the files are stored locally and their paths are stored in the entity
         $cvFilePath = __DIR__ . '/../../var/uploads/applications/' . $this->getCurriculumVitae();
         $motivationLetterFilePath = __DIR__ . '/../../var/uploads/applications/' . $this->getLetterOfMotivation();
 
-        // Check if the files exist and remove them
         if ($filesystem->exists($cvFilePath)) {
             $filesystem->remove($cvFilePath);
         }

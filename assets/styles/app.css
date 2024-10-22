@@ -54,8 +54,7 @@ body {
     margin-bottom: 1.8rem;
 
     .navigation__logo {
-        height: 72px;
-        width: 72px;
+        width: 140px;
         background-color: #060660;
     }
 }

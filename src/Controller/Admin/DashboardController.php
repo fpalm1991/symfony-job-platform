@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\JobController;
 use App\Entity\Application;
+use App\Entity\Company;
 use App\Entity\Feature;
 use App\Entity\Job;
 use App\Entity\User;
@@ -70,5 +71,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('User');
         yield MenuItem::linkToCrud('User', 'fa fa-user', User::class)
             ->setController(UserCrudController::class);
+
+        yield MenuItem::section('Company');
+        yield MenuItem::linkToCrud('Company', 'fa fa-building', Company::class);
     }
 }
