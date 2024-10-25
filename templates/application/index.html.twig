@@ -15,9 +15,42 @@
 
         <section class="section">
 
-            <h1 class="h1">Apply for {{ job.title }}</h1>
+            <h1 class="h1 mb-2">Applications</h1>
 
-            {% include 'application/_form.html.twig' %}
+            {% if applications|length > 0 %}
+
+                <table>
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Position</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for application in applications %}
+
+                    <tr class="applications-list">
+                        <th scope="row">{{ application.applicant }}</th>
+                        <td>{{ application.job }}</td>
+                        <td>
+                            <a href="{{ path('show_single_application', {id: application.id}) }}">Manage Application</a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+                <p>No applications yet.</p>
+
+            {% endif %}
 
         </section>
 

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApplicationController!{% endblock %}
+
+{% block body %}
+    <style></style>
+
+    <header class="header">
+
+        {% include 'components/_navigation.html.twig' %}
+
+    </header>
+
+    <main class="main">
+
+        <section class="section">
+
+            <h1 class="h1 mb-2">{{ application.applicant }}</h1>
+
+            <ul>
+                <li>{{ application.applicant }}</li>
+                <li>{{ application.applicant.email }}</li>
+            </ul>
+
+            <h3 class="h3 mb-2">Documents</h3>
+
+            <ul class="mb-2">
+                <li><strong>CV</strong>
+                    <a href="{{ path('show_application_document', {fileName: application.curriculumVitae}) }}" target="_blank">
+                        {{ application.curriculumVitae }}
+                    </a>
+                </li>
+                <li><strong>Letter of Motivation</strong>
+                    <a href="{{ path('show_application_document', {fileName: application.letterOfMotivation}) }}" target="_blank">
+                        {{ application.curriculumVitae }}
+                    </a>
+                </li>
+            </ul>
+
+            <div class="application-actions">
+                <a href="{{ path('response_to_application', {id: application.id}) }}" role="button" class="contrast">Answer</a>
+            </div>
+
+
+        </section>
+
+    </main>
+
+{% endblock %}

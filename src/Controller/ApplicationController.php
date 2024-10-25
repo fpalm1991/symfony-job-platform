@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Application;
+use App\Entity\ApplicationStatus;
 use App\Entity\Job;
 use App\Entity\User;
+use App\Form\ApplicationResponseType;
 use App\Form\ApplicationType;
 use App\lib\ApplicationFile;
+use App\lib\ApplicationStatusEnum;
 use App\lib\FileHelper;
+use App\Repository\ApplicationStatusRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -30,8 +34,7 @@ class ApplicationController extends AbstractController
 
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordGenerator,
-    )
-    {}
+    ) {}
 
     /**
      * @throws RandomException
@@ -45,7 +48,8 @@ class ApplicationController extends AbstractController
         EntityManagerInterface $entityManager,
         SluggerInterface $slugger,
         #[Autowire('%kernel.project_dir%/var/uploads/applications')] string $applicationFilesDirectory,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        ApplicationStatusRepository $applicationStatusRepository,
     ): Response
     {
         // Create the application form
@@ -116,6 +120,9 @@ class ApplicationController extends AbstractController
                 $user->setRoles(['ROLE_APPLICANT']);
             }
 
+            // Set application status to pending with repository
+            $application->setApplicationStatus($applicationStatusRepository->findStatusById(ApplicationStatusEnum::Pending->value));
+
             // Set the Job associated with the Application
             $application->setJob($job);
             $application->setApplicant($user);
@@ -146,14 +153,13 @@ class ApplicationController extends AbstractController
                     ->html("<p>New Application for " . $job->getTitle() . " by " . $user->getFirstName() . " " . $user->getLastName() . " has been submitted.</p>");
 
                 $mailer->send($email);
-
             }
 
             return $this->redirectToRoute('app_job_application_thank_you');
         }
 
         // Render the application form
-        return $this->render('application/index.html.twig', [
+        return $this->render('application/apply.html.twig', [
             'form' => $form->createView(),
             'job' => $job,
         ]);
@@ -164,9 +170,8 @@ class ApplicationController extends AbstractController
         return $this->render('application/thank_you.html.twig');
     }
 
-
-    #[Route('/show-application/{fileName}}', name: 'show_application_document', methods: ['GET'])]
-    public function showApplication(string $fileName): Response
+    #[Route('/show-application-document/{fileName}}', name: 'show_application_document', methods: ['GET'])]
+    public function showApplicationDocument(string $fileName): Response
     {
         $filePath = $this->getParameter('kernel.project_dir') . '/var/uploads/applications/' . $fileName;
 
@@ -182,5 +187,51 @@ class ApplicationController extends AbstractController
                 'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"',
             ]
         );
+    }
+
+    #[Route('/applications', name: 'show_applications', methods: ['GET'])]
+    public function showApplications(EntityManagerInterface $entityManager): Response {
+
+        $applications = $entityManager->getRepository(Application::class)->findAll();
+
+        return $this->render('application/index.html.twig', [
+            'applications' => $applications,
+        ]);
+    }
+
+    #[Route('/applications/{id}', name: 'show_single_application', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function showApplication(EntityManagerInterface $entityManager, int $id): Response {
+
+        $application = $entityManager->getRepository(Application::class)->find($id);
+
+        return $this->render('application/show.html.twig', [
+            'application' => $application,
+        ]);
+    }
+
+    #[Route('/applications/{id}/response', name: 'response_to_application', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function responseToApplication(EntityManagerInterface $entityManager, int $id, Request $request): Response {
+
+        $application = $entityManager->getRepository(Application::class)->find($id);
+
+        $form = $this->createForm(ApplicationResponseType::class, null, [
+            'applicant_name' => $application->getApplicant()->getFullName(),
+            'application_status' => $application->getApplicationStatus(),
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // TODO: Update status
+            /*
+            $application->setStatus(ApplicationStatus::Archived);
+            $entityManager->persist($application);
+            $entityManager->flush();
+            */
+        }
+
+        return $this->render('application/response.html.twig', [
+            'application' => $application,
+            'form' => $form->createView(),
+        ]);
     }
 }

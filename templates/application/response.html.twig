@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApplicationController!{% endblock %}
+
+{% block body %}
+    <style></style>
+
+    <header class="header">
+
+        {% include 'components/_navigation.html.twig' %}
+
+    </header>
+
+    <main class="main">
+
+        <section class="section">
+
+            <h1 class="h1 mb-2">Answer for {{ application.applicant }}</h1>
+
+            <div class="form">
+
+                {{ form(form) }}
+
+            </div>
+
+        </section>
+
+    </main>
+
+{% endblock %}

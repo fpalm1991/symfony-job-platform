@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\lib\ApplicationStatusEnum;
 use App\Repository\ApplicationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Filesystem\Filesystem;
@@ -26,6 +27,10 @@ class Application
 
     #[ORM\Column(length: 255)]
     private ?string $letter_of_motivation = null;
+
+    #[ORM\ManyToOne(inversedBy: 'application')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ApplicationStatus $applicationStatus = null;
 
     public function getId(): ?int
     {
@@ -99,5 +104,17 @@ class Application
 
     public function __toString(): string {
         return $this->getApplicant()->getFirstname() . " " . $this->getApplicant()->getLastname() . " applied for " . $this->getJob();
+    }
+
+    public function getApplicationStatus(): ?ApplicationStatus
+    {
+        return $this->applicationStatus;
+    }
+
+    public function setApplicationStatus(?ApplicationStatus $applicationStatus): static
+    {
+        $this->applicationStatus = $applicationStatus;
+
+        return $this;
     }
 }
