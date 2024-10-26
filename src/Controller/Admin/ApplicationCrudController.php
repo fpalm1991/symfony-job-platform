@@ -3,12 +3,14 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Application;
+use App\Entity\ApplicationStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +26,6 @@ class ApplicationCrudController extends AbstractCrudController
         return Application::class;
     }
 
-
     public function configureFields(string $pageName): iterable
     {
 
@@ -34,6 +35,12 @@ class ApplicationCrudController extends AbstractCrudController
             AssociationField::new('applicant')
                 ->setCrudController(ApplicantCrudController::class)
                 ->setLabel('Applicant'),
+
+            AssociationField::new('applicationStatus', 'ApplicationStatus')
+                ->setCrudController(ApplicationStatusCrudController::class)
+                ->setLabel('Application Status'),
+
+            BooleanField::new('isArchived', 'Is archived'),
         ];
 
         if ($pageName === Crud::PAGE_DETAIL) {

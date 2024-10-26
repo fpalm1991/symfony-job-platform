@@ -44,6 +44,9 @@ class Job
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column]
+    private ?bool $is_active = null;
+
     public function __construct()
     {
         $this->features = new ArrayCollection();
@@ -170,6 +173,18 @@ class Job
     public function setCreatedAt(): static
     {
         $this->createdAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->is_active;
+    }
+
+    public function setIsActive(bool $is_active): static
+    {
+        $this->is_active = $is_active;
 
         return $this;
     }

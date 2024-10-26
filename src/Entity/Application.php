@@ -32,6 +32,9 @@ class Application
     #[ORM\JoinColumn(nullable: false)]
     private ?ApplicationStatus $applicationStatus = null;
 
+    #[ORM\Column]
+    private ?bool $is_archived = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,6 +117,18 @@ class Application
     public function setApplicationStatus(?ApplicationStatus $applicationStatus): static
     {
         $this->applicationStatus = $applicationStatus;
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->is_archived;
+    }
+
+    public function setIsArchived(bool $is_archived): static
+    {
+        $this->is_archived = $is_archived;
 
         return $this;
     }

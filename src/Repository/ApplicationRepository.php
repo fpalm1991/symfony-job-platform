@@ -16,6 +16,14 @@ class ApplicationRepository extends ServiceEntityRepository
         parent::__construct($registry, Application::class);
     }
 
+    public function getActiveApplications(): array {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.is_archived = :status')
+            ->setParameter('status', false)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Application[] Returns an array of Application objects
     //     */

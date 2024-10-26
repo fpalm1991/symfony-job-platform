@@ -121,3 +121,19 @@ a[role=button] {
         display: none;
     }
 }
+
+.application-status {
+    background-color: grey;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: .8rem;
+}
+
+.application-status--invited {
+    background-color: orange;
+}
+
+.application-status--approved {
+    background-color: darkgreen;
+}

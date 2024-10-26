@@ -32,7 +32,7 @@ final class JobController extends AbstractController
         ]));
 
         // Force a file download with the name given by $filename
-        $mpdf->Output('job.pdf', \Mpdf\Output\Destination::DOWNLOAD);
+        $mpdf->Output("{$job->getTitle()}.pdf", \Mpdf\Output\Destination::DOWNLOAD);
 
         return $this->redirectToRoute('app_index', [], Response::HTTP_SEE_OTHER);
     }

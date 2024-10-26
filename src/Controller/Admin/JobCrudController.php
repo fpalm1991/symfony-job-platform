@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Job;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
@@ -38,13 +39,15 @@ class JobCrudController extends AbstractCrudController
                 ->formatValue(function ($value, $entity) {
                     return implode(', ', $entity->getFeatures()->map(fn($feature) => $feature->getTitle())->toArray());
                 }),
+
+            BooleanField::new('isActive', 'Is Active')
+                ->setFormTypeOption('data', true),
         ];
     }
 
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            // Enable the "Show" action
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 

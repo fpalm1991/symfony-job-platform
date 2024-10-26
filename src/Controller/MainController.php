@@ -17,7 +17,7 @@ final class MainController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
 
-        $jobs = $entityManager->getRepository(Job::class)->findAllOrderedByDate();
+        $jobs = $entityManager->getRepository(Job::class)->findAllActiveJobsOrderedByDate();
 
         // Pagination
         $pagination = $paginator->paginate(

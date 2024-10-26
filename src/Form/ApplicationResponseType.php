@@ -27,7 +27,8 @@ class ApplicationResponseType extends AbstractType
             ->add('application_status', EntityType::class, [
                 'class' => ApplicationStatus::class,
                 'label' => 'Set status of application (will not be send in email)',
-                'data' => $options['application_status'] // Set select to current application status
+                'data' => $options['application_status'],
+                'choice_label' => 'status',
             ])
             ->add('submit', SubmitType::class)
         ;

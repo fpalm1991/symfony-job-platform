@@ -23,6 +23,15 @@ class JobRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllActiveJobsOrderedByDate(): array {
+        return $this->createQueryBuilder('j')
+            ->andWhere('j.is_active = :active')
+            ->setParameter('active', true)
+            ->orderBy('j.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Job[] Returns an array of Job objects
     //     */

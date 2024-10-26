@@ -18,6 +18,16 @@
             <h1 class="h1 mb-2">{{ application.applicant }}</h1>
 
             <ul>
+                {% if application.applicationStatus == 'Pending' %}
+                    <li>Status <span class="application-status">{{ application.applicationStatus }}</span></li>
+                {% elseif application.applicationStatus == 'Invited' %}
+                    <li>Status <span class="application-status application-status--invited">{{ application.applicationStatus }}</span></li>
+                {% elseif application.applicationStatus == 'Approved' %}
+                    <li>Status <span class="application-status application-status--approved">{{ application.applicationStatus }}</span></li>
+                {% else %}
+                    <li>Status <span class="application-status">{{ application.applicationStatus }}</span></li>
+                {% endif %}
+
                 <li>{{ application.applicant }}</li>
                 <li>{{ application.applicant.email }}</li>
             </ul>
@@ -25,22 +35,23 @@
             <h3 class="h3 mb-2">Documents</h3>
 
             <ul class="mb-2">
-                <li><strong>CV</strong>
+                <li>
                     <a href="{{ path('show_application_document', {fileName: application.curriculumVitae}) }}" target="_blank">
-                        {{ application.curriculumVitae }}
+                        <strong>Curriculum Vitae</strong>
                     </a>
                 </li>
-                <li><strong>Letter of Motivation</strong>
+                <li>
                     <a href="{{ path('show_application_document', {fileName: application.letterOfMotivation}) }}" target="_blank">
-                        {{ application.curriculumVitae }}
+                        <strong>Letter of Motivation</strong>
                     </a>
                 </li>
             </ul>
 
             <div class="application-actions">
-                <a href="{{ path('response_to_application', {id: application.id}) }}" role="button" class="contrast">Answer</a>
+                <a href="{{ path('response_to_application', {id: application.id}) }}" role="button" class="contrast">
+                    Write E-Mail
+                </a>
             </div>
-
 
         </section>
 

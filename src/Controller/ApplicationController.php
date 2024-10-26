@@ -120,8 +120,11 @@ class ApplicationController extends AbstractController
                 $user->setRoles(['ROLE_APPLICANT']);
             }
 
-            // Set application status to pending with repository
+            // Set application status to pending (communication with applicant)
             $application->setApplicationStatus($applicationStatusRepository->findStatusById(ApplicationStatusEnum::Pending->value));
+
+            // Set application status to unarchived (to be able to archive applications later)
+            $application->setIsArchived(false);
 
             // Set the Job associated with the Application
             $application->setJob($job);
@@ -192,7 +195,7 @@ class ApplicationController extends AbstractController
     #[Route('/applications', name: 'show_applications', methods: ['GET'])]
     public function showApplications(EntityManagerInterface $entityManager): Response {
 
-        $applications = $entityManager->getRepository(Application::class)->findAll();
+        $applications = $entityManager->getRepository(Application::class)->getActiveApplications();
 
         return $this->render('application/index.html.twig', [
             'applications' => $applications,
@@ -209,8 +212,16 @@ class ApplicationController extends AbstractController
         ]);
     }
 
-    #[Route('/applications/{id}/response', name: 'response_to_application', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function responseToApplication(EntityManagerInterface $entityManager, int $id, Request $request): Response {
+    /**
+     * @throws TransportExceptionInterface
+     */
+    #[Route('/applications/{id}/response', name: 'response_to_application', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function responseToApplication(
+        EntityManagerInterface $entityManager,
+        int $id,
+        Request $request,
+        MailerInterface $mailer,
+    ): Response {
 
         $application = $entityManager->getRepository(Application::class)->find($id);
 
@@ -221,12 +232,25 @@ class ApplicationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // TODO: Update status
-            /*
-            $application->setStatus(ApplicationStatus::Archived);
+
+            $formData = $form->getData();
+            $applicationStatus = $formData['application_status'];
+            $responseMessage = $formData['response'];
+
+            $email = (new TemplatedEmail())
+                ->from(new Address('application@example.com', 'Test Company'))
+                ->to($application->getApplicant()->getEmail())
+                ->subject('Your application has been submitted')
+                ->htmlTemplate('emails/answer.html.twig')
+                ->context(['responseMessage' => $responseMessage, 'application' => $application]);
+
+            $mailer->send($email);
+
+            $application->setApplicationStatus($applicationStatus);
             $entityManager->persist($application);
             $entityManager->flush();
-            */
+
+            return $this->redirectToRoute('show_applications');
         }
 
         return $this->render('application/response.html.twig', [
