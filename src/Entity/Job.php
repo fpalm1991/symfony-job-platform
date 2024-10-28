@@ -139,7 +139,6 @@ class Job
     public function removeApplication(Application $application): static
     {
         if ($this->applications->removeElement($application)) {
-            // set the owning side to null (unless already changed)
             if ($application->getJob() === $this) {
                 $application->setJob(null);
             }
@@ -187,5 +186,17 @@ class Job
         $this->is_active = $is_active;
 
         return $this;
+    }
+
+    // Delete header image if Job gets deleted
+    #[ORM\PreRemove]
+    public function deleteImageFile(): void
+    {
+        if ($this->headerImage) {
+            $filePath = __DIR__ . '/../../public/image/jobs/' . $this->headerImage;
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
     }
 }
