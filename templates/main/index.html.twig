@@ -25,21 +25,37 @@
                 {% for job in pagination %}
 
                     <article class="job">
-                        <h3 class="job__title">{{ job.title }} <span class="job-teaser__fte">({{ job.fte }} %)</span></h3>
-                        <p class="job__description">{{ job.description|slice(0, 120) }}...</p>
-                        <a role="button" class="job__link contrast" href="{{ path('app_job_show', {'id': job.id}) }}">Learn more</a>
 
-                        <div class="features">
+                        <div class="job__content">
 
-                            {% for feature in job.features %}
+                            <h3 class="job__title">{{ job.title }}</h3>
+                            <p class="job__description">{{ job.description|slice(0, 120) }}...</p>
+                            <a role="button" class="job__link contrast" href="{{ path('app_job_show', {'id': job.id}) }}">Learn more</a>
 
-                                <span class="feature">{{ feature.title }}</span>
+                            <div class="features">
 
-                            {% endfor %}
+                                <span class="feature">{{ job.fte }} %</span>
+
+                                {% for feature in job.features %}
+
+                                    <span class="feature">{{ feature.title }}</span>
+
+                                {% endfor %}
+
+                            </div>
 
                         </div>
+                        
+                        <div class="job__image">
+                            <img src="/image/jobs/{{ job.headerImage }}" alt="">
+                        </div>
+
+
+
 
                     </article>
+
+
 
                 {% endfor %}
 

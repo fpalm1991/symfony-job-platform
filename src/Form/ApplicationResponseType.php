@@ -30,7 +30,9 @@ class ApplicationResponseType extends AbstractType
                 'data' => $options['application_status'],
                 'choice_label' => 'status',
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Send Message',
+            ])
         ;
     }
 

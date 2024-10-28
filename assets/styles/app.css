@@ -78,13 +78,29 @@ body {
 }
 
 .job {
-
+    display: flex;
     padding: 2.2rem 3.8rem;
     transition: all .2s;
+    column-gap: 2rem;
 
-    .job__link {
-        display: inline-block;
-        margin-bottom: 1rem;
+    .job__content {
+        flex: 2;
+
+        .job__link {
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .job__image {
+        flex: 1;
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
     }
 
 }

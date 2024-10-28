@@ -25,24 +25,30 @@ class JobCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
 
-        return [
+        $fields = [
             TextField::new('title'),
             IntegerField::new('fte'),
-            TextAreaField::new('description'),
             ImageField::new('headerImage', 'Header Image for Job')
                 ->setUploadDir('public/image/jobs/')
                 ->setBasePath('/image/jobs/'),
-            AssociationField::new('features')
+        ];
+
+        if ($pageName === CRUD::PAGE_DETAIL OR $pageName === CRUD::PAGE_EDIT) {
+            $fields[] = AssociationField::new('features')
                 ->setFormTypeOptions([
                     'by_reference' => false,
                 ])
                 ->formatValue(function ($value, $entity) {
                     return implode(', ', $entity->getFeatures()->map(fn($feature) => $feature->getTitle())->toArray());
-                }),
+                });
 
-            BooleanField::new('isActive', 'Is Active')
-                ->setFormTypeOption('data', true),
-        ];
+            $fields[] = TextAreaField::new('description');
+        }
+
+        $fields[] = BooleanField::new('isActive', 'Is Active')
+            ->setFormTypeOption('data', true);
+
+        return $fields;
     }
 
     public function configureActions(Actions $actions): Actions
