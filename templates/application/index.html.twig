@@ -24,6 +24,7 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Position</th>
+                    <th scope="col">Status</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -35,6 +36,14 @@
                     <tr class="applications-list">
                         <th scope="row">{{ application.applicant }}</th>
                         <td>{{ application.job }}</td>
+
+                        {% if application.applicationStatus == 'Pending' %}
+                            <td class="text-align-center application-status">{{ application.applicationStatus }}</td>
+                        {% elseif application.applicationStatus == 'Invited' %}
+                            <td class="text-align-center application-status application-status--invited">{{ application.applicationStatus }}</td>
+                        {% elseif application.applicationStatus == 'Approved' %}
+                            <td class="text-align-center application-status application-status--approved">{{ application.applicationStatus }}</td>
+                        {% endif %}
                         <td>
                             <a href="{{ path('show_single_application', {id: application.id}) }}">Manage Application</a>
                         </td>

@@ -1,0 +1,15 @@
+{# Email sent to admins after application #}
+
+{% extends 'base.email.html.twig' %}
+
+{% block title %}
+    {{ title|default('E-Mail Job Platform') }}
+{% endblock %}
+
+{% block body %}
+
+    <h1>New application for {{ job.title }}</h1>
+
+    <p>New application for {{ job.title }} by {{ application.applicant.getFullName }}.</p>
+
+{% endblock %}

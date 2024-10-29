@@ -149,11 +149,12 @@ class ApplicationController extends AbstractController
             $admins = $userRepository->findAdmins();
 
             foreach ($admins as $admin) {
-                $email = (new Email())
+                $email = (new TemplatedEmail())
                     ->from(new Address('application@example.com', 'Test Company'))
-                    ->to($applicantData->getEmail())
+                    ->to($admin->getEmail())
                     ->subject("New Application for " . $job->getTitle())
-                    ->html("<p>New Application for " . $job->getTitle() . " by " . $user->getFirstName() . " " . $user->getLastName() . " has been submitted.</p>");
+                    ->htmlTemplate('emails/application.html.twig')
+                    ->context(['job' => $job, 'application' => $application]);
 
                 $mailer->send($email);
             }

@@ -28,43 +28,62 @@ class ApplicationCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $fields = [];
 
-        $fields = [
-            AssociationField::new('job'),
+        // Define reusable fields
+        $applicantField = AssociationField::new('applicant')
+            ->setCrudController(ApplicantCrudController::class)
+            ->setLabel('Applicant');
 
-            AssociationField::new('applicant')
-                ->setCrudController(ApplicantCrudController::class)
-                ->setLabel('Applicant'),
+        $applicationStatusField = AssociationField::new('applicationStatus', 'ApplicationStatus')
+            ->setCrudController(ApplicationStatusCrudController::class)
+            ->setLabel('Application Status');
 
-            AssociationField::new('applicationStatus', 'ApplicationStatus')
-                ->setCrudController(ApplicationStatusCrudController::class)
-                ->setLabel('Application Status'),
+        $isArchivedField = BooleanField::new('isArchived', 'Is archived');
 
-            BooleanField::new('isArchived', 'Is archived'),
-        ];
+        $cvField = TextField::new('curriculum_vitae', 'Curriculum Vitae')
+            ->formatValue(fn($value) => sprintf(
+                '<a href="%s" target="_blank">%s</a>',
+                $this->generateUrl('show_application_document', ['fileName' => $value]),
+                'Curriculum Vitae'
+            ));
 
-        if ($pageName === Crud::PAGE_DETAIL) {
-            $fields[] = TextField::new('curriculum_vitae', 'Curriculum Vitae')
-                ->formatValue(function ($value, $entity) {
-                    return sprintf(
-                        '<a href="%s" target="_blank">%s</a>',
-                        $this->generateUrl('show_application_document', ['fileName' => $value]),
-                        'Curriculum Vitae'
-                    );
-                });
+        $motivationField = TextField::new('letter_of_motivation', 'Letter of Motivation')
+            ->formatValue(fn($value) => sprintf(
+                '<a href="%s" target="_blank">%s</a>',
+                $this->generateUrl('show_application_document', ['fileName' => $value]),
+                'Letter of Motivation'
+            ));
 
-            $fields[] = TextField::new('letter_of_motivation', 'Letter of Motivation')
-                ->formatValue(function ($value, $entity) {
-                    return sprintf(
-                        '<a href="%s" target="_blank">%s</a>',
-                        $this->generateUrl('show_application_document', ['fileName' => $value]),
-                        'Letter of Motivation'
-                    );
-                });
+        switch ($pageName) {
+            case Crud::PAGE_INDEX:
+                $fields = [
+                    AssociationField::new('job'),
+                    $applicantField,
+                    $applicationStatusField,
+                    $isArchivedField
+                ];
+                break;
+
+            case Crud::PAGE_DETAIL:
+                $fields = [
+                    $applicantField,
+                    $cvField,
+                    $motivationField
+                ];
+                break;
+
+            case Crud::PAGE_EDIT:
+                $fields = [
+                    $applicationStatusField,
+                    $isArchivedField
+                ];
+                break;
         }
 
-        return  $fields;
+        return $fields;
     }
+
 
     public function configureActions(Actions $actions): Actions
     {

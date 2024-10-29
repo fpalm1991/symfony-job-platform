@@ -20,6 +20,10 @@ body {
     line-height: 1.8;
 }
 
+.text-align-center {
+    text-align: center;
+}
+
 .container-layout {
     margin: 4rem auto;
     display: grid;
@@ -31,7 +35,12 @@ body {
 .header,
 .main,
 .footer {
-    grid-column: -2 / 2;
+    grid-column: 1 / -1;
+
+    @media (min-width: 680px) {
+        grid-column: 2 / -2;
+    }
+
 }
 
 .header__image {
@@ -53,6 +62,14 @@ body {
     align-items: center;
     margin-bottom: 1.8rem;
 
+    ul {
+        @media (max-width: 680px) {
+            padding-right: 2rem;
+        }
+    }
+
+
+
     .navigation__logo {
         width: 140px;
         background-color: #060660;
@@ -71,6 +88,12 @@ body {
     margin-bottom: 4rem;
 }
 
+.features {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 .feature {
     background-color: rgba(144, 144, 239, 0.09);
     padding: 6px 24px;
@@ -79,9 +102,16 @@ body {
 
 .job {
     display: flex;
-    padding: 2.2rem 3.8rem;
+    flex-direction: column;
     transition: all .2s;
-    column-gap: 2rem;
+    gap: 2rem;
+    padding-top: 1.8rem;
+    padding-bottom: 1.8rem;
+
+    @media (min-width: 680px) {
+        flex-direction: row;
+        padding: 2.2rem 3.8rem;
+    }
 
     .job__content {
         flex: 2;

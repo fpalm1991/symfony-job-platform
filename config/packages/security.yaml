@@ -37,7 +37,8 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: /show-application-document, roles: ROLE_ADMIN } # Only make application documents accessible to admins
+        - { path: ^/applications, roles: ROLE_ADMIN }
+        - { path: ^/show-application-document, roles: ROLE_ADMIN } # Only make application documents accessible to admins
 
 when@test:
     security:

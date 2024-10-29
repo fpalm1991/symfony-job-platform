@@ -33,6 +33,18 @@ class JobCrudController extends AbstractCrudController
                 ->setBasePath('/image/jobs/'),
         ];
 
+        if ($pageName === CRUD::PAGE_NEW) {
+            $fields[] = AssociationField::new('features')
+                ->setFormTypeOptions([
+                    'by_reference' => false,
+                ])
+                ->formatValue(function ($value, $entity) {
+                    return implode(', ', $entity->getFeatures()->map(fn($feature) => $feature->getTitle())->toArray());
+                });
+
+            $fields[] = TextAreaField::new('description');
+        }
+
         if ($pageName === CRUD::PAGE_DETAIL OR $pageName === CRUD::PAGE_EDIT) {
             $fields[] = AssociationField::new('features')
                 ->setFormTypeOptions([

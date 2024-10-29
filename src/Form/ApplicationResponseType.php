@@ -32,6 +32,9 @@ class ApplicationResponseType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Send Message',
+                'attr' => [
+                    'class' => 'contrast',
+                ]
             ])
         ;
     }
