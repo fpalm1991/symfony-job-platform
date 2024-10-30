@@ -153,7 +153,7 @@ class ApplicationController extends AbstractController
                     ->from(new Address('application@example.com', 'Test Company'))
                     ->to($admin->getEmail())
                     ->subject("New Application for " . $job->getTitle())
-                    ->htmlTemplate('emails/application.html.twig')
+                    ->htmlTemplate('emails/application-notification.html.twig')
                     ->context(['job' => $job, 'application' => $application]);
 
                 $mailer->send($email);

@@ -183,3 +183,19 @@ a[role=button] {
 .application-status--approved {
     background-color: darkgreen;
 }
+
+.font-application-status {
+    color: grey;
+}
+
+.font-application-status--invited {
+    color: orange;
+}
+
+.font-application-status--approved {
+    color: darkgreen;
+}
+
+.font-application-status--rejected {
+    color: darkred;
+}

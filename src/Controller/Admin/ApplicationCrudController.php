@@ -30,12 +30,14 @@ class ApplicationCrudController extends AbstractCrudController
     {
         $fields = [];
 
-        // Define reusable fields
         $applicantField = AssociationField::new('applicant')
             ->setCrudController(ApplicantCrudController::class)
             ->setLabel('Applicant');
 
-        $applicationStatusField = AssociationField::new('applicationStatus', 'ApplicationStatus')
+        $applicationStatusTextField = TextField::new('applicationStatus', 'Application Status')
+            ->setLabel('Application Status');
+
+        $applicationStatusAssociationField = AssociationField::new('applicationStatus', 'ApplicationStatus')
             ->setCrudController(ApplicationStatusCrudController::class)
             ->setLabel('Application Status');
 
@@ -60,7 +62,7 @@ class ApplicationCrudController extends AbstractCrudController
                 $fields = [
                     AssociationField::new('job'),
                     $applicantField,
-                    $applicationStatusField,
+                    $applicationStatusTextField,
                     $isArchivedField
                 ];
                 break;
@@ -75,7 +77,7 @@ class ApplicationCrudController extends AbstractCrudController
 
             case Crud::PAGE_EDIT:
                 $fields = [
-                    $applicationStatusField,
+                    $applicationStatusAssociationField,
                     $isArchivedField
                 ];
                 break;

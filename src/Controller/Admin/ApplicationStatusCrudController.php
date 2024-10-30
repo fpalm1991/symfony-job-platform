@@ -3,6 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\ApplicationStatus;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -25,4 +28,10 @@ class ApplicationStatusCrudController extends AbstractCrudController
         ];
     }
     */
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->disable(Action::NEW, Action::EDIT, Action::DETAIL, Action::DELETE);
+    }
 }
