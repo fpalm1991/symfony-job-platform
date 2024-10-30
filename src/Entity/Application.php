@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\lib\ApplicationStatusEnum;
 use App\Repository\ApplicationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Filesystem\Filesystem;
