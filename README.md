@@ -1,6 +1,6 @@
 # Job Platform - Symfony Learning Project
 
-This job platform includes functionality for:
+This Symfony learning project includes functionality for:
 
 - **Admin Dashboard**: Integrates EasyAdmin for managing jobs, applications, and platform data efficiently.
 - **Authentication**: Implements login functionality with restricted access to backend features.
